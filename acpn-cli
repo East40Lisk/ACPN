@@ -1,0 +1,15 @@
+acpn-cli/
+├── src/
+│   ├── index.ts          # CLI entry point
+│   ├── commands/
+│   │   ├── register.ts
+│   │   ├── add-content.ts
+│   │   ├── issue-license.ts
+│   │   ├── set-rule.ts
+│   │   └── verify.ts
+│   ├── utils/
+│   │   └── storage.ts    # Local JSON DB or IPFS helper
+├── package.json
+├── tsconfig.json
+├── .gitignore
+└── README.md
