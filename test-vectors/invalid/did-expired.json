@@ -1,0 +1,13 @@
+{
+  "id": "did:acpn:content:expired",
+  "controller": "0xAbC123",
+  "domains": ["example.com"],
+  "quorum": 1,
+  "issuedAt": 1600000000,
+  "expiresAt": 1600001000,
+  "signature": {
+    "type": "EIP712",
+    "signer": "0xAbC123",
+    "value": "0xdeadbeef"
+  }
+}
