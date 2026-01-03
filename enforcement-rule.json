@@ -1,0 +1,42 @@
+{
+  "$id": "acpn://schema/enforcement-rule",
+  "title": "EnforcementRule",
+  "description": "Automated rules for protecting creator content",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique enforcement rule ID"
+    },
+    "contentId": {
+      "type": "string",
+      "description": "Content ID this rule applies to"
+    },
+    "ruleType": {
+      "type": "string",
+      "enum": ["revocation", "permission", "notification", "quorum-approval"],
+      "description": "Type of enforcement rule"
+    },
+    "conditions": {
+      "type": "object",
+      "description": "Conditions under which the rule triggers",
+      "properties": {
+        "timeLimit": { "type": "string", "format": "date-time" },
+        "maxUsage": { "type": "integer", "minimum": 1 },
+        "triggeredBy": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "action": {
+      "type": "string",
+      "enum": ["revoke", "notify", "block", "require-quorum"],
+      "description": "Action to take when the rule triggers"
+    },
+    "executedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp when the rule was executed"
+    }
+  },
+  "required": ["id", "contentId", "ruleType", "action"]
+}
