@@ -1,0 +1,24 @@
+acpn-core/
+├── RFC/
+│   ├── RFC-0001.md
+│   ├── RFC-0002-did.md
+│   ├── RFC-0003-zk-quorum.md
+│   └── RFC-0004-sealing.md
+│
+├── schemas/
+│   ├── did.schema.json
+│   ├── scd.schema.json
+│   └── signature.schema.json
+│
+├── test-vectors/
+│   ├── valid/
+│   │   ├── did.json
+│   │   ├── scd.json
+│   │   └── zk-public.json
+│   └── invalid/
+│       ├── did-expired.json
+│       └── scd-tampered.json
+│
+├── SECURITY.md
+├── LICENSE
+└── README.md
