@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["type", "signer", "value"],
+  "properties": {
+    "type": { "enum": ["EIP191", "EIP712"] },
+    "signer": { "type": "string" },
+    "value": { "type": "string", "pattern": "^0x" }
+  }
+}
