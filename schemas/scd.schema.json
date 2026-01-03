@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": ["contentId", "ipfs", "arweave", "integrity"],
+  "properties": {
+    "contentId": { "type": "string" },
+    "ipfs": {
+      "type": "object",
+      "required": ["cid"]
+    },
+    "arweave": {
+      "type": "object",
+      "required": ["txId"]
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["hashAlg", "hash"]
+    }
+  }
+}
