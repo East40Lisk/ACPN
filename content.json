@@ -1,0 +1,48 @@
+{
+  "$id": "acpn://schema/content",
+  "title": "Content",
+  "description": "Represents a digital content item in ACPN",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the content"
+    },
+    "creatorId": {
+      "type": "string",
+      "description": "Creator ID who owns this content"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the content"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description of the content"
+    },
+    "contentHash": {
+      "type": "string",
+      "description": "Cryptographic hash of the content (SHA256 or IPFS CID)"
+    },
+    "mimeType": {
+      "type": "string",
+      "description": "Content MIME type (e.g., image/png, video/mp4)"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the content was created"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional tags for the content"
+    },
+    "licenses": {
+      "type": "array",
+      "items": { "$ref": "license.json" },
+      "description": "Licenses applied to the content"
+    }
+  },
+  "required": ["id", "creatorId", "contentHash", "createdAt"]
+}
