@@ -1,6 +1,7 @@
 # ACPN Core
 
 This repository defines the **canonical specifications** for the Autonomous Content Protection Network.
+
 acpn-contracts/
 ├── contracts/
 │   ├── CreatorRights.sol
