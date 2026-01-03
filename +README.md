@@ -1,6 +1,14 @@
 # ACPN Core
 
 This repository defines the **canonical specifications** for the Autonomous Content Protection Network.
+acpn-contracts/
+├── contracts/
+│   ├── CreatorRights.sol
+│   └── LicenseManager.sol
+├── test/
+│   └── rights.test.js
+├── hardhat.config.js
+└── README.md
 
 If it is not defined here, it is not ACPN.
 # Automated Creator Protection Network (ACPN)
