@@ -1,0 +1,42 @@
+{
+  "$id": "acpn://schema/license",
+  "title": "License",
+  "description": "License defining permissions and conditions for a content item",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique license ID"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["exclusive", "non-exclusive", "open-source", "personal-use", "custom"],
+      "description": "Type of license"
+    },
+    "issuedTo": {
+      "type": "string",
+      "description": "Recipient ID (can be user, app, or organization)"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the license was issued"
+    },
+    "validUntil": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional expiration date"
+    },
+    "conditions": {
+      "type": "object",
+      "description": "Custom rules for license usage",
+      "properties": {
+        "maxViews": { "type": "integer", "minimum": 1 },
+        "allowRedistribution": { "type": "boolean" },
+        "allowCommercialUse": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["id", "type", "issuedTo", "issuedAt"]
+}
