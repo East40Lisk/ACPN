@@ -1,0 +1,36 @@
+{
+  "$id": "acpn://schema/creator",
+  "title": "Creator",
+  "description": "Represents a creator in the ACPN system",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the creator (DID or UUID)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the creator"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Optional contact email"
+    },
+    "publicKey": {
+      "type": "string",
+      "description": "Creator's public key for signing and verification"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional arbitrary metadata about the creator",
+      "additionalProperties": true
+    },
+    "registeredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the creator was registered"
+    }
+  },
+  "required": ["id", "name", "publicKey", "registeredAt"]
+}
