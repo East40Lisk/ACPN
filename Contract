@@ -1,1 +1,33 @@
-c
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract AcpnRegistry is Ownable {
+    // ENS/DID → SEC1 P256 pubkey (uncompressed 65 bytes)
+    mapping(string => bytes) public userPubkeys;
+    mapping(string => bool) public revokedUsers;
+
+    event PubkeyRegistered(string indexed userId, bytes pubkey);
+    event UserRevoked(string indexed userId);
+
+    constructor(address initialOwner) Ownable(initialOwner) {}
+
+    // Called via UserOp (gasless)
+    function registerPubkey(string calldata userId, bytes calldata pubkey) external {
+        require(pubkey.length == 65, "Invalid uncompressed P256 pubkey");
+        require(userPubkeys[userId].length == 0, "Already registered");
+        userPubkeys[userId] = pubkey;
+        emit PubkeyRegistered(userId, pubkey);
+    }
+
+    function getPasskeyPubkey(string calldata userId) external view returns (bytes memory) {
+        require(!revokedUsers[userId], "User revoked");
+        return userPubkeys[userId];
+    }
+
+    function revokeUser(string calldata userId) external onlyOwner {
+        revokedUsers[userId] = true;
+        emit UserRevoked(userId);
+    }
+}
