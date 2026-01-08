@@ -1,0 +1,19 @@
+0 verbose cli /data/data/com.termux/files/usr/bin/node /data/data/com.termux/files/usr/bin/npm
+1 info using npm@11.6.2
+2 info using node@v24.12.0
+3 silly config load:file:/data/data/com.termux/files/usr/lib/node_modules/npm/npmrc
+4 silly config load:file:/data/data/com.termux/files/home/ACPN/ACPN/contracts/.npmrc
+5 silly config load:file:/data/data/com.termux/files/home/.npmrc
+6 silly config load:file:/data/data/com.termux/files/usr/etc/npmrc
+7 verbose title npm test
+8 verbose argv "test"
+9 verbose logfile logs-max:10 dir:/data/data/com.termux/files/home/.npm/_logs/2026-01-04T03_08_55_845Z-
+10 verbose logfile /data/data/com.termux/files/home/.npm/_logs/2026-01-04T03_08_55_845Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 verbose cwd /data/data/com.termux/files/home/ACPN/ACPN/contracts/contracts
+14 verbose os Linux 5.15.167-android13-8-00020-g8713724d3081-ab13744575
+15 verbose node v24.12.0
+16 verbose npm  v11.6.2
+17 verbose exit 1
+18 verbose code 1

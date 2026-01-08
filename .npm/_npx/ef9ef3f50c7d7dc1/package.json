@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "hardhat": "^3.1.2"
+  },
+  "_npx": {
+    "packages": [
+      "hardhat"
+    ]
+  }
+}
