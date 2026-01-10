@@ -1,0 +1,1 @@
+// Solidity registry contract
