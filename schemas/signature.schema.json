@@ -1,3 +1,38 @@
+// lib.rs
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen(module = "/js/acpn_glue.js")]
+extern "C" {
+    #[wasm_bindgen(catch)]
+    async fn getPasskeySignature(challenge: &[u8], rp_id: &str) -> Result<JsValue, JsValue>;
+}
+
+#[wasm_bindgen]
+pub async fn verify_identity_and_unlock(ens_name: &str) -> Result<bool, JsValue> {
+    let challenge = crypto::generate_random_challenge();
+    
+    // Call the JS Glue - This is the "Invisible Handshake"
+    let signature_result = getPasskeySignature(&challenge, "acpn.network").await?;
+
+    if signature_result.is_null() {
+        return Ok(false); // User cancelled or failed biometric
+    }
+
+    // Resolve the ENS name to get the biometric public key
+    let public_key = registry::get_ens_passkey(ens_name).await?;
+
+    // Verify the P256 signature
+    let is_legit = crypto::verify_assertion(public_key, signature_result);
+
+    if is_legit {
+        // CONTENT UNLOCKED: WASM starts providing clean frames
+        Ok(true)
+    } else {
+        // CONTENT SCRAMBLED: Return noise
+        Ok(false)
+    }
+}
+
 {
   "type": "object",
   "required": ["type", "signer", "value"],
