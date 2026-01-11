@@ -1,0 +1,27 @@
+contract AcpnToken is ERC20, Ownable {
+    bool public immutable soulbound;  // Set at creation
+
+    constructor(string memory name, string memory symbol, address creator, bool _soulbound) 
+        ERC20(name, symbol) Ownable(creator) {
+        soulbound = _soulbound;
+    }
+
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
+
+    // Override transfers if soulbound
+    function _beforeTokenTransfer(address from, address to, uint256) internal override {
+        if (soulbound && from != address(0) && to != address(0)) {
+            revert("Soulbound: Transfers disabled");
+        }
+    }
+}
+
+contract AcpnTokenFactory {
+    function createToken(string calldata name, string calldata symbol, bool soulbound) external returns (address) {
+        AcpnToken token = new AcpnToken(name, symbol, msg.sender, soulbound);
+        // Emit event...
+        return address(token);
+    }
+}

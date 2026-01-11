@@ -1,0 +1,85 @@
+import React, { useState } from 'react';
+import { createPublicClient, http, encodeFunctionData } from 'viem';
+import { polygon } from 'viem/chains';
+import { createSmartAccountClient } from 'permissionless';
+import { toSimpleSmartAccount } from 'permissionless/accounts';
+import { entryPoint07Address } from 'permissionless/_types/constants';
+
+const REGISTRY_ADDRESS = '0xYourDeployedRegistry';  // Update after deploy
+const BUNDLER_URL = 'https://api.stackup.sh/v1/bundler/YOUR_STACKUP_KEY';  // Free tier
+const PAYMASTER_URL = 'https://api.stackup.sh/v1/paymaster/YOUR_STACKUP_KEY';
+
+const client = createPublicClient({ transport: http('https://rpc.polygon.technology') });
+
+export const GaslessSignup: React.FC = () => {
+  const [status, setStatus] = useState('');
+  const [userId, setUserId] = useState('');  // e.g., ENS name or DID
+
+  const signup = async () => {
+    try {
+      setStatus('Creating passkey...');
+
+      // 1. WebAuthn passkey creation
+      const credential = await navigator.credentials.create({
+        publicKey: {
+          challenge: crypto.getRandomValues(new Uint8Array(32)),
+          rp: { name: 'ACPN Network', id: location.hostname },
+          user: { id: new Uint8Array(16), name: userId, displayName: userId },
+          pubKeyCredParams: [{ type: 'public-key', alg: -7 }],  // ECDSA P256
+          authenticatorSelection: { userVerification: 'required' },
+        },
+      }) as PublicKeyCredential;
+
+      const pubkey = (credential.response as AuthenticatorAttestationResponse).getPublicKey();
+      if (!pubkey) throw new Error('No pubkey');
+
+      setStatus('Creating smart account...');
+
+      // 2. Simple smart account (passkey as owner – stub signer)
+      const account = await toSimpleSmartAccount({
+        client,
+        owner: {
+          async signMessage({ message }) {
+            // Real: Use WebAuthn assertion for signing
+            return new Uint8Array(64);  // Placeholder – implement full assertion
+          },
+        },
+      });
+
+      // 3. Smart client with bundler/paymaster (gasless)
+      const smartClient = createSmartAccountClient({
+        account,
+        chain: polygon,
+        bundlerTransport: http(BUNDLER_URL),
+        paymaster: { sponsorUserOperation: async () => ({ paymasterAndData: '0x' }) },  // Simple sponsor
+        entryPoint: { address: entryPoint07Address, version: '0.7' },
+      });
+
+      // 4. Send UserOp to register pubkey
+      const hash = await smartClient.sendUserOperation({
+        uo: {
+          callData: account.encodeCallData({
+            to: REGISTRY_ADDRESS,
+            data: encodeFunctionData({
+              abi: [{ name: 'registerPubkey', type: 'function', inputs: [{ type: 'string' }, { type: 'bytes' }], outputs: [] }],
+              args: [userId, pubkey],
+            }),
+          }),
+        },
+      });
+
+      setStatus(`Success! UserOp: ${hash}`);
+    } catch (err) {
+      setStatus(`Error: ${(err as Error).message}`);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Gasless ACPN Signup</h2>
+      <input placeholder="ENS/DID" value={userId} onChange={e => setUserId(e.target.value)} />
+      <button onClick={signup}>Register with Passkey (Free)</button>
+      <p>{status}</p>
+    </div>
+  );
+};

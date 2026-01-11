@@ -101,4 +101,4 @@ pub fn scramble_buffer(data: &mut [u8]) {
 #[wasm_bindgen]
 pub fn mock_ipfs_cid(data: &str) -> String {
     format!("ipfs://Qm{}", hash_data(data.as_bytes())[..46].to_string())
-}
+  }
